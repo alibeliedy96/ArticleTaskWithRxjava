@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.bumptech.glide.Glide;
 import com.example.mytaskwithrxjava.R;
 
@@ -40,7 +41,8 @@ public class DetailsActivity extends AppCompatActivity {
         mPublishedBy.setText(publishedBy);
         mDate.setText(date);
         mDescription.setText(description);
-        Glide.with(this).load(imageURL).into(mImage);
+        Glide.with(this).load(imageURL).placeholder(R.drawable.profile).into(mImage);
+
     }
 
  private void init()

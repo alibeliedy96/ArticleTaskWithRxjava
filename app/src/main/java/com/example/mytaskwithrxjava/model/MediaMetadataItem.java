@@ -16,8 +16,9 @@ public class MediaMetadataItem{
 	@SerializedName("height")
 	private int height;
 
-	public void setFormat(String format){
+	public MediaMetadataItem setFormat(String format){
 		this.format = format;
+		return null;
 	}
 
 	public String getFormat(){

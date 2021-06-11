@@ -9,6 +9,6 @@ import retrofit2.http.Query;
 
 
 public interface ArticleInterface {
-    @GET("mostpopular/v2/viewed/7.json")
+    @GET("mostpopular/v2/viewed/30.json")
     Observable<ArticleResponse> getArticle(@Query("api-key") String api_key);
 }

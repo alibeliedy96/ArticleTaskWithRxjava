@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyTaskWithRXJava</string>
+    <string name="title">title</string>
+    <string name="ali_beliedy">ali beliedy</string>
+    <string name="date">31/5/2021</string>
+    <string name="description">description</string>
 </resources>

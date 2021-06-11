@@ -13,10 +13,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import com.example.mytaskwithrxjava.R;
+import com.example.mytaskwithrxjava.model.ArticleResponse;
 import com.example.mytaskwithrxjava.model.ArticlesItem;
+import com.example.mytaskwithrxjava.model.MediaItem;
+import com.example.mytaskwithrxjava.model.MediaMetadataItem;
 import com.example.mytaskwithrxjava.ui.DetailsActivity;
 
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -26,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
     List<ArticlesItem> articleList;
-    private Context context;
+    private final Context context;
 
 
     public ArticleAdapter(Context context,List<ArticlesItem> newsList) {
@@ -49,8 +55,28 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         viewHolder.date.setText(article.getPublishedDate());
         viewHolder.publishedBy.setText(article.getByline());
 
+
+
+        String url="";
+       if (article.getMedia()!= null && article.getMedia().size()>0)
+       {
+
+         MediaItem mediaItem=article.getMedia().get(0);
+        if (mediaItem.getMediaMetadata() != null && mediaItem.getMediaMetadata().size()>0)
+        {
+
+            for (MediaMetadataItem media: mediaItem.getMediaMetadata()) {
+                if (media.getFormat().equals("Standard Thumbnail")){
+                    url=media.getUrl();
+
+                }
+            }
+        }
+
+       }
         Glide.with(context)
-                .load(article.getMedia().get(0).getMediaMetadata().get(0).getUrl()).into(viewHolder.imageView);
+                .load(url).placeholder(R.drawable.profile).into(viewHolder.imageView);
+
 
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +88,26 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
                 detailsActivityIntent.putExtra("description",article.getBriefSummary());
 
 
-                detailsActivityIntent.putExtra("imageURL",article.getMedia().get(0).getMediaMetadata().get(2).getUrl());
+                String url="";
+                if (article.getMedia()!= null && article.getMedia().size()>0)
+                {
+
+                    MediaItem mediaItem=article.getMedia().get(0);
+                    if (mediaItem.getMediaMetadata() != null && mediaItem.getMediaMetadata().size()>0)
+                    {
+
+                        for (MediaMetadataItem media: mediaItem.getMediaMetadata()) {
+                            if (media.getFormat().equals("mediumThreeByTwo440")){
+                                url=media.getUrl();
+
+                            }
+                        }
+                    }
+
+                }
+
+                detailsActivityIntent.putExtra("imageURL",url);
+
                 context.startActivity(detailsActivityIntent);
             }
         });
@@ -80,7 +125,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-       private CircleImageView imageView;
+        private CircleImageView imageView;
         private TextView title,date, publishedBy;
         private CardView cardView;
 
